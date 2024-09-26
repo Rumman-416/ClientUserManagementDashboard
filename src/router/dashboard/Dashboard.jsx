@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
-import AddUser from "../../pages/users/AddUser";
-import GetAllUsers from "../../pages/users/GetAllUsers";
-import EditUser from "../../pages/users/EditUser";
-import DashboardHome from "../../pages/dashboard/Index";
-import GetAllClients from "../../pages/clients/GetAllClients";
-import AddClient from "../../pages/clients/AddClient";
-import EditClient from "../../pages/clients/EditClient";
+const AddUser = lazy(() => import("../../pages/users/AddUser"));
+const GetAllUsers = lazy(() => import("../../pages/users/GetAllUsers"));
+const EditUser = lazy(() => import("../../pages/users/EditUser"));
+const DashboardHome = lazy(() => import("../../pages/dashboard/Index"));
+const GetAllClients = lazy(() => import("../../pages/clients/GetAllClients"));
+const AddClient = lazy(() => import("../../pages/clients/AddClient"));
+const EditClient = lazy(() => import("../../pages/clients/EditClient"));
 
 const Dashboard = () => {
   const routes = [

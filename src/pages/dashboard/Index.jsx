@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Pie } from "react-chartjs-2";
 import { toast } from "react-toastify";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { PrintComponent, useReactToPrint } from 'react-to-print';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Index = () => {
+  const componentPDF = useRef()
+  const tableRef = React.createRef();
   const [searchQuery, setSearchQuery] = useState("");
   const [showEntries, setShowEntries] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,33 +97,6 @@ const Index = () => {
     setSearchQuery(e.target.value);
   };
 
-  // const handleUseDelete = (serviceId) => {
-  //   setDeleteId(serviceId);
-  //   setShowDeleteModal(!showDeleteModal);
-  // };
-
-  // const handleDelete = () => {
-  //   if (deleteInput === "DELETE") {
-  //     axios
-  //       .delete(`${apiUrl}/users/${deleteId}`)
-  //       .then((response) => {
-  //         fetchData();
-  //         console.log("User deleted:", response.data);
-  //         toast.success("User deleted successfully");
-  //         fetchData();
-
-  //         setShowDeleteModal(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error("User deleting Field:", error);
-  //         toast.error("User deleting Field");
-  //       });
-  //   } else {
-  //     toast.error("Enter DELETE to confirm deletion");
-  //   }
-  //   setDeleteInput("");
-  //   setShowDeleteModal(false);
-  // };
 
   const handleShowEntriesChange = (e) => {
     setShowEntries(parseInt(e.target.value, 10));
@@ -135,6 +110,11 @@ const Index = () => {
   const endIndex = startIndex + showEntries;
   const paginatedData = filteredData.slice(startIndex, endIndex);
 
+  const generatePDF=useReactToPrint({
+    content: ()=>componentPDF.current,
+    documentTitle:"MIS Report",
+    onAfterPrint:()=>toast.success("Report saved in pdf")
+  })
   return (
     <>
       <div className="flex justify-center items-start gap-5 flex-col md:flex-row">
@@ -179,10 +159,16 @@ const Index = () => {
                 value={searchQuery}
                 onChange={handleSearch}
               />
+               <button
+            className="bg-blue-500 text-white rounded px-4 py-2"
+            onClick={generatePDF}
+          >
+            Export to PDF
+          </button>
             </div>
           </div>
         </div>
-
+<div ref={componentPDF}>
         <table className="table border w-full">
           <thead>
             <tr className="border-slate-200 bg-[#c7e8f5]">
@@ -211,7 +197,7 @@ const Index = () => {
             )}
           </tbody>
         </table>
-
+        </div>
         <div className="flex justify-between items-center py-2">
           <p className="text-sm">
             Showing {startIndex + 1} to {endIndex} of {filteredData.length}{" "}
