@@ -169,7 +169,7 @@ const Index = () => {
           </div>
         </div>
 <div ref={componentPDF}>
-        <table className="table border w-full">
+        <table className="table border w-full  overflow-x-auto">
           <thead>
             <tr className="border-slate-200 bg-[#c7e8f5]">
               <th className="font-semibold text-gray-700 uppercase">no.</th>

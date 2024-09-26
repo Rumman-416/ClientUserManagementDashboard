@@ -328,7 +328,7 @@ const AddClient = () => {
           </div>
         </div>
         <div className=" px-5 pb-5">
-          <table className="table border w-full">
+          <table className="table border w-full overflow-x-auto">
             <thead>
               <tr className="border-slate-200 bg-[#c7e8f5]">
                 <th className="font-semibold text-gray-700 uppercase">no.</th>
